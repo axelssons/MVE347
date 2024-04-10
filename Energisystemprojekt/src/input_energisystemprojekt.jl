@@ -9,7 +9,7 @@ folder = dirname(@__FILE__)
 
 #Sets
 REGION = [:DE, :SE, :DK]
-PLANT = [:Hydro, :Gas] # Add all plants
+PLANT = [:Hydro, :Gas, :Wind, :PV] # Add all plants
 HOUR = 1:8760
 
 #Parameters
@@ -29,7 +29,9 @@ myinf = 1e8
 maxcaptable = [                                                             # GW
         # PLANT      DE             SE              DK       
         :Hydro       0              14              0       
-        :Gas         myinf          myinf           myinf         
+        :Gas         myinf          myinf           myinf  
+        :Wind       180             280             90
+        :PV         460             75              60       
         ]
 
 maxcap = AxisArray(maxcaptable[:,2:end]'.*1000, REGION, PLANT) # MW
