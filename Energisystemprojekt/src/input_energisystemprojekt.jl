@@ -17,14 +17,17 @@ numregions = length(REGION)
 numhours = length(HOUR)
 
 timeseries = CSV.read("$folder\\TimeSeries.csv", DataFrame)
-wind_cf = AxisArray(ones(numregions, numhours), REGION, HOUR)
-pv_cf = AxisArray(ones(numregions, numhours), REGION, HOUR)
+cf = AxisArray(ones(numregions, numplants, numhours), REGION, PLANT, HOUR)
+# wind_cf = AxisArray(ones(numregions, numhours), REGION, HOUR)
+# pv_cf = AxisArray(ones(numregions, numhours), REGION, HOUR)
 load = AxisArray(zeros(numregions, numhours), REGION, HOUR)
  
     for r in REGION
-        wind_cf[r, :]=timeseries[:, "Wind_"*"$r"]                                                        # 0-1, share of installed cap
-        pv_cf[r, :]=timeseries[:, "PV_"*"$r"]
-        load[r, :]=timeseries[:, "Load_"*"$r"]                                                           # [MWh]
+        cf[r, :Wind, :]=timeseries[:, "Wind_"*"$r"]
+        cf[r, :PV, :]=timeseries[:, "PV_"*"$r"]
+        # wind_cf[r, :]=timeseries[:, "Wind_"*"$r"]                                   # 0-1, share of installed cap
+        # pv_cf[r, :]=timeseries[:, "PV_"*"$r"]
+        load[r, :]=timeseries[:, "Load_"*"$r"]                                        # [MWh]
     end
 
 myinf = 1e8
@@ -42,6 +45,6 @@ maxcap = AxisArray(maxcaptable[:,2:end]'.*1000, REGION, PLANT) # MW
 discountrate=0.05
 
 
-      return (; REGION, PLANT, HOUR, numregions, load, maxcap)
+    return (; REGION, PLANT, HOUR, numregions, load, maxcap, cf)
 
 end # read_input

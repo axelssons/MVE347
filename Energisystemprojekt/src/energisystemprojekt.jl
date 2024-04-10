@@ -14,7 +14,7 @@ function buildmodel(input)
 
     println("\nBuilding model...")
  
-    @unpack REGION, PLANT, HOUR, numregions, load, maxcap = input
+    @unpack REGION, PLANT, HOUR, numregions, load, cf, maxcap = input
 
     m = Model(Gurobi.Optimizer)
 
@@ -34,7 +34,7 @@ function buildmodel(input)
 
     @constraints m begin
         Generation[r in REGION, p in PLANT, h in HOUR],
-            Electricity[r, p, h] <= Capacity[r, p] # * capacity factor
+            Electricity[r, p, h] <= Capacity[r, p] * cf[r, p, h]
 
         SystemCost[r in REGION],
             Systemcost[r] >= 0 # sum of all annualized costs
