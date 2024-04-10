@@ -18,10 +18,12 @@ numhours = length(HOUR)
 
 timeseries = CSV.read("$folder\\TimeSeries.csv", DataFrame)
 wind_cf = AxisArray(ones(numregions, numhours), REGION, HOUR)
+pv_cf = AxisArray(ones(numregions, numhours), REGION, HOUR)
 load = AxisArray(zeros(numregions, numhours), REGION, HOUR)
  
     for r in REGION
         wind_cf[r, :]=timeseries[:, "Wind_"*"$r"]                                                        # 0-1, share of installed cap
+        pv_cf[r, :]=timeseries[:, "PV_"*"$r"]
         load[r, :]=timeseries[:, "Load_"*"$r"]                                                           # [MWh]
     end
 
