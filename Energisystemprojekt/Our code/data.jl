@@ -1,7 +1,7 @@
 using CSV, DataFrames, AxisArrays
 folder = dirname(@__FILE__)
 #Sets
-REGION = [:DE, :SE, :DK]
+REGION = [:DE,:SE,:DK]
 PLANT = [:Hydro, :Gas, :Wind, :PV] # Add all plants
 HOUR = 1:8760
 
@@ -15,8 +15,7 @@ cf = AxisArray(ones(numregions, numplants, numhours), REGION, PLANT, HOUR)
 # wind_cf = AxisArray(ones(numregions, numhours), REGION, HOUR)
 # pv_cf = AxisArray(ones(numregions, numhours), REGION, HOUR)
 load = AxisArray(zeros(numregions, numhours), REGION, HOUR)
-water_inflow = AxisArray(zeros(numhours, HOUR))
-water_inflow = timeseries[:, "Hydro_inflow"]
+hydro_inflow = timeseries[:, "Hydro_inflow"]
  
     for r in REGION
         cf[r, :Wind, :]=timeseries[:, "Wind_"*"$r"]
