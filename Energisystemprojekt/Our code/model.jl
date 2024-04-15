@@ -4,7 +4,6 @@ using JuMP, AxisArrays, Gurobi, UnPack
 function buildmodel(data_file)
     include(data_file)
 
-
     m = Model()
 
     @variable(m, Electricity[r in REGION, p in PLANT, h in HOUR] >=0)
@@ -14,19 +13,6 @@ function buildmodel(data_file)
     @objective(m, Min, 
         sum(Capacity[r,p]*AC[p]+Electricity[r,p,h]*RunningCost[p]+Electricity[r,p,h]/Efficiency[p]*FuelCost[p] for p in PLANT for r in REGION for h in HOUR)
     )
-
-    @constraints m begin
-        WaterLevel[1] == WaterLevel[8760]
-        for p in PLANT
-            for r in REGION
-                Capacity[r, p] <= maxcaptable[r, p]
-                for h in HOUR
-                    Electricity[r, p, h] <= Capacity[r, p] * cf[r, p, h]
-                    Electricity[r, p, h] >= load[r, h]
-                end
-            end
-        end
-    end
 
     @constraint(m, waterlevel, WaterLevel[1] == WaterLevel[8760])
     @constraint(m, capacity, Capacity[r, p] <= maxcaptable[r, p])
