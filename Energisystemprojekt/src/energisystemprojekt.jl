@@ -33,8 +33,8 @@ function buildmodel(input)
 
 
     @constraints m begin
-        Generation[r in REGION, p in PLANT, h in HOUR],
-            Electricity[r, p, h] <= Capacity[r, p] * cf[r, p, h]
+        
+        Electricity[r, p, h] <= Capacity[r, p] * cf[r, p, h]
 
         SystemCost[r in REGION],
             Systemcost[r] >= 0 # sum of all annualized costs
@@ -85,3 +85,4 @@ end #runmodel
 
 end # module
 
+#Vatten, load, capacitet
