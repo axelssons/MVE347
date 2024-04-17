@@ -10,21 +10,26 @@ function buildmodel(data_file)
     @variable(m, Capacity[r in REGION, p in PLANT] >=0)
     @variable(m, WaterLevel[h in HOUR] >= 0)
 
-    @objective(m, Min, 
-        sum(Capacity[r,p]*AC[p]+Electricity[r,p,h]*RunningCost[p]+Electricity[r,p,h]/Efficiency[p]*FuelCost[p] for p in PLANT for r in REGION for h in HOUR)
+    @objective(m, Min, sum(
+        Capacity[r, p]*AC[p] + Electricity[r, p, h]*RunningCost[p] + Electricity[r, p, h]/Efficiency[p]*FuelCost[p]
+        for p in PLANT for r in REGION for h in HOUR)
     )
 
-    
     for r in REGION
         for p in PLANT
-            
             for h in HOUR
-                @constraint(m, Electricity[r, p, h] >= load[r, h])
                 @constraint(m, Electricity[r, p, h] <= Capacity[r, p] * cf[r, p, h])
             end
             @constraint(m, Capacity[r, p] <= maxcap[r, p])
         end
     end
+    
+    for r in REGION
+        for h in HOUR
+            @constraint(m, sum(Electricity[r, p, h] for p in PLANT) >= load[r, h])
+        end
+    end
+
     @constraint(m, WaterLevel[1] == WaterLevel[8760])
     for h in 1:8759
         @constraint(m, WaterLevel[h+1] == WaterLevel[h] + hydro_inflow[h] - Electricity[:SE, :Hydro, h])

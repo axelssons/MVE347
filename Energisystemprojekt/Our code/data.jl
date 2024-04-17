@@ -10,7 +10,7 @@ numregions = length(REGION)
 numhours = length(HOUR)
 numplants = length(PLANT)
 
-timeseries = CSV.read("$folder\\TimeSeries.csv", DataFrame)
+timeseries = CSV.read("$folder/TimeSeries.csv", DataFrame)
 cf = AxisArray(ones(numregions, numplants, numhours), REGION, PLANT, HOUR)
 # wind_cf = AxisArray(ones(numregions, numhours), REGION, HOUR)
 # pv_cf = AxisArray(ones(numregions, numhours), REGION, HOUR)
@@ -25,7 +25,6 @@ hydro_inflow = timeseries[:, "Hydro_inflow"]
         load[r, :]=timeseries[:, "Load_"*"$r"]                                        # [MWh]
     end
 
-
 myinf=1e8
 maxcaptable = [                                                             # GW
 # PLANT      DE             SE              DK       
@@ -36,15 +35,15 @@ maxcaptable = [                                                             # GW
 ]
 maxcap = AxisArray(maxcaptable[:,2:end]'.*1000, REGION, PLANT) # MW
 
-RunningCost=AxisArray([0.1, 2, 0.1, 0.1], PLANT)
-FuelCost=AxisArray([0,22,0,0], PLANT)
-Efficiency=AxisArray([1,0.4,1,1], PLANT)
+RunningCost = AxisArray([0.1, 2, 0.1, 0.1], PLANT)
+FuelCost = AxisArray([0,22,0,0], PLANT)
+Efficiency = AxisArray([1,0.4,1,1], PLANT)
 
-dr=0.05 #discountrate
-IC=AxisArray([0, 550, 1100, 600],PLANT)
-Lifetime=AxisArray([80, 30, 25, 25],PLANT)
-AC=AxisArray(zeros(numplants), PLANT)
+dr = 0.05 #discountrate
+IC = AxisArray([0, 550, 1100, 600],PLANT)
+Lifetime = AxisArray([80, 30, 25, 25],PLANT)
+AC = AxisArray(zeros(numplants), PLANT)
 for p in PLANT
-    AC[p]=IC[p]*dr/(1-1/(1+dr)^Lifetime[p])#Beräknar avskrivningsvärdet
+    AC[p] = IC[p]*dr/(1-1/(1+dr)^Lifetime[p]) #Beräknar avskrivningsvärdet
 end
 

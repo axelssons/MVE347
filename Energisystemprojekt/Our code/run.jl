@@ -25,4 +25,3 @@ Capacity_result = value.(Capacity)
 
 
 println("Cost (M€): ", Cost_result)
-
