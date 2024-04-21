@@ -37,6 +37,8 @@ RunningCost = AxisArray([0.1, 2, 0.1, 0.1], PLANT)
 FuelCost = AxisArray([0, 22, 0, 0], PLANT)
 Efficiency = AxisArray([1, 0.4, 1, 1], PLANT)
 
+RörligCost = AxisArray([0.1,2+22/0.4,0.1,0.1],PLANT)
+
 dr = 0.05 #discountrate
 IC = AxisArray([0, 550000, 1100000, 600000], PLANT)
 Lifetime = AxisArray([80, 30, 25, 25], PLANT)

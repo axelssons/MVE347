@@ -11,9 +11,8 @@ function buildmodel(data_file)
     @variable(m, WaterLevel[h in HOUR] >= 0)
     @variable(m, Transmission[r in REGION, r in REGION] >= 0)
 
-    @objective(m, Min, sum(
-        Capacity[r, p]*AC[p] + Electricity[r, p, h]*RunningCost[p] + Electricity[r, p, h]/Efficiency[p]*FuelCost[p]
-        for p in PLANT for r in REGION for h in HOUR)
+    @objective(m, Min,
+        sum(Capacity[r, p]*AC[p] for r in REGION for p in PLANT) + sum(Electricity[r, p, h]*RörligCost[p] for p in PLANT for r in REGION for h in HOUR)
     )
 
     for r in REGION

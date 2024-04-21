@@ -1,0 +1,8 @@
+Uppgift 1
+Cost = 84489 M€
+CO2 = 25297.211 kge
+Endast SE hydro och Gas i alla regioner producerar
+
+Uppgift 2:
+a, infeasable
+b
