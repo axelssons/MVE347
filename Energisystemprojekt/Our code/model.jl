@@ -23,16 +23,17 @@ function buildmodel(data_file)
             @constraint(m, Capacity[r, p] <= maxcap[r, p])
         end
     end
-    
+
     for r in REGION
         for h in HOUR
-            @constraint(m, sum(Electricity[r, p, h] for p in PLANT) >= load[r, h])
+            @constraint(m, sum(Electricity[r, :, h]) >= load[r, h])
         end
     end
 
     @constraint(m, WaterLevel[1] == WaterLevel[8760])
     for h in 1:8759
         @constraint(m, WaterLevel[h+1] == WaterLevel[h] + hydro_inflow[h] - Electricity[:SE, :Hydro, h])
+        @constraint(m, WaterLevel[h] <= maxcap_water)
     end
 
     return m, Capacity, Electricity
