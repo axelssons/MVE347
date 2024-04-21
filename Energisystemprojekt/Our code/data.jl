@@ -12,16 +12,12 @@ numplants = length(PLANT)
 
 timeseries = CSV.read("$folder/TimeSeries.csv", DataFrame)
 cf = AxisArray(ones(numregions, numplants, numhours), REGION, PLANT, HOUR)
-# wind_cf = AxisArray(ones(numregions, numhours), REGION, HOUR)
-# pv_cf = AxisArray(ones(numregions, numhours), REGION, HOUR)
 load = AxisArray(zeros(numregions, numhours), REGION, HOUR)
 hydro_inflow = timeseries[:, "Hydro_inflow"]
  
 for r in REGION
     cf[r, :Wind, :]=timeseries[:, "Wind_"*"$r"]
     cf[r, :PV, :]=timeseries[:, "PV_"*"$r"]
-    # wind_cf[r, :]=timeseries[:, "Wind_"*"$r"]                                   # 0-1, share of installed cap
-    # pv_cf[r, :]=timeseries[:, "PV_"*"$r"]
     load[r, :]=timeseries[:, "Load_"*"$r"]                                        # [MWh]
 end
 
