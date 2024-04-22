@@ -5,10 +5,10 @@ using JuMP
 include("model.jl")
 include("data.jl")
 #1
-m, Capacity, Electricity= buildmodel("data.jl")
+#m, Capacity, Electricity= buildmodel("data.jl")
 
-#2
-#m, Capacity, Electricity, Batteries = buildmodel("data.jl")
+#2b
+m, Capacity, Electricity, Batteries, Transmission = buildmodel("data.jl")
 
 set_optimizer_attribute(m, "LogLevel", 1)
 set_optimizer(m, Gurobi.Optimizer) #m is model from model file
@@ -31,6 +31,19 @@ Electricity_result = value.(Electricity)
 Batteries_result = value.(Batteries)
 CO2 = 0.202/0.4*sum(Electricity_result[r,:Gas,h] for r in REGION for h in HOUR)
 
+
+annual_elec = AxisArray(zeros(numregions, numplants), REGION, PLANT)
+installed_cap = AxisArray(zeros(numregions, numplants), REGION, PLANT)
+elec_germany = AxisArray(zeros(numplants, length(147:651)), PLANT, 147:651)
+for r in REGION
+    for p in PLANT
+        annual_elec[r, p] = sum(Electricity_result[r, p, :])
+        installed_cap[r, p] = Capacity_result[r, p]
+    end
+end
+for p in PLANT
+    elec_germany[p, :] = Electricity_result[:DE, p, 147:651]
+end
 println("Cost (M€): ", Cost_result)
 println("Annual Electricity production: ", annual_elec)
 print(installed_cap)

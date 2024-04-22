@@ -2,7 +2,7 @@ using CSV, DataFrames, AxisArrays
 folder = dirname(@__FILE__)
 #Sets
 REGION = [:DE,:SE,:DK]
-PLANT = [:Hydro, :Gas, :Wind, :PV ]#:Nuclear] # Add all plants
+PLANT = [:Hydro, :Gas, :Wind, :PV]#:Nuclear] # Add all plants
 HOUR = 1:8760
 
 #Parameters
@@ -21,7 +21,6 @@ for r in REGION
     load[r, :]=timeseries[:, "Load_"*"$r"]                                        # [MWh]
 end
 
-MaxNuc=0
 myinf = 1e8
 maxcaptable = [                                                             # GW
 # PLANT      DE             SE              DK       
@@ -29,12 +28,11 @@ maxcaptable = [                                                             # GW
 :Gas         myinf          myinf           myinf  
 :Wind        180            280             90
 :PV          460            75              60 
-#:Nuclear     MaxNuc         MaxNuc          MaxNuc      
+#:Nuclear     myinf         myinf           myinf      
 ]
 maxcap = AxisArray(maxcaptable[:, 2:end]'.*1000, REGION, PLANT) # MW
 
 maxcap_water = 33*10^6
-BatteriesCap = myinf
 
 #RunningCost = AxisArray([0.1, 2, 0.1, 0.1, 4], PLANT)
 #FuelCost = AxisArray([0, 22, 0, 0, 3.2], PLANT)
@@ -46,7 +44,7 @@ RörligCost = AxisArray([0.1,2+22/0.4,0.1,0.1],PLANT) #,4+3.2/0.4
 CO2cap=0.1*1.3877448499264726e8
 
 dr = 0.05 #discountrate
-IC = AxisArray([0, 55, 1100, 600]*1000, PLANT)
+IC = AxisArray([0, 550, 1100, 600]*1000, PLANT)
 Lifetime = AxisArray([80, 30, 25, 25], PLANT)
 AC = AxisArray(zeros(numplants), PLANT)
 for p in PLANT

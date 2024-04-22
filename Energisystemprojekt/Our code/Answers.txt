@@ -4,12 +4,12 @@ CO2 = 1.29e8 kg CO2e
 
 Uppgift 2:
 a, infeasable
-b, Cost = 64922,04 M€
+b, Cost = 66525.24 M€
    CO2 = 1.39e7 kg CO2e
    Vi ser att priset blir billigare och koldioxidutsläppen minskar pga. mindre användning av gas eftersom batterierna i stor utsträckning kan användas för att hantera variationen
 
 Uppgift 3:
-Cost = 60488.90 M€
+Cost = 62434 M€
 CO2 = 1.39e7 kg CO2e
 
 Uppgift 4:
