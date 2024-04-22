@@ -9,7 +9,8 @@ function buildmodel(data_file)
     @variable(m, Electricity[r in REGION, p in PLANT, h in HOUR] >=0)
     @variable(m, Capacity[r in REGION, p in PLANT] >=0)
     @variable(m, WaterLevel[h in HOUR] >= 0)
-    
+        @variable(m, Transmission[r in REGION, r in REGION] >= 0)
+
 
     #2b
     @variable(m, Batteries[r in REGION] >= 0)
@@ -39,6 +40,26 @@ function buildmodel(data_file)
     for h in 1:8759
         @constraint(m, WaterLevel[h+1] == WaterLevel[h] + hydro_inflow[h] - Electricity[:SE, :Hydro, h])
         @constraint(m, WaterLevel[h] <= maxcap_water)
+    end
+
+    for r1 in REGION
+        for r2 in REGION
+            if r1 == r2
+                @constraint(m, Transmission[r1, r2] == 0)
+            else
+                @constraint(m, Transmission[r1, r2] <= myinf)
+            end
+        end
+    end
+
+    for r1 in REGION
+        for r2 in REGION
+            if r1 == r2
+                @constraint(m, Transmission[r1, r2] == 0)
+            else
+                @constraint(m, Transmission[r1, r2] <= myinf)
+            end
+        end
     end
 
     #2a
