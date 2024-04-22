@@ -9,7 +9,7 @@ function buildmodel(data_file)
     @variable(m, Electricity[r in REGION, p in PLANT, h in HOUR] >=0)
     @variable(m, Capacity[r in REGION, p in PLANT] >=0)
     @variable(m, WaterLevel[h in HOUR] >= 0)
-        @variable(m, Transmission[r in REGION, r in REGION] >= 0)
+    @variable(m, Transmission[r in REGION, p in REGION] >= 0)
 
 
     #2b
@@ -52,15 +52,6 @@ function buildmodel(data_file)
         end
     end
 
-    for r1 in REGION
-        for r2 in REGION
-            if r1 == r2
-                @constraint(m, Transmission[r1, r2] == 0)
-            else
-                @constraint(m, Transmission[r1, r2] <= myinf)
-            end
-        end
-    end
 
     #2a
     @constraint(m, 0.202/0.4*sum(Electricity[r,:Gas,h] for r in REGION for h in HOUR) <= CO2cap)
