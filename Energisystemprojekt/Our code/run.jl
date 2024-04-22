@@ -8,7 +8,7 @@ include("data.jl")
 #m, Capacity, Electricity= buildmodel("data.jl")
 
 #2b
-m, Capacity, Electricity, Batteries, Transmission = buildmodel("data.jl")
+m, Capacity, Electricity, Batteries, Transmission, TransCap = buildmodel("data.jl")
 
 set_optimizer_attribute(m, "LogLevel", 1)
 set_optimizer(m, Gurobi.Optimizer) #m is model from model file
@@ -29,8 +29,9 @@ Cost_result = objective_value(m)/1000000 # M€
 Capacity_result = value.(Capacity)
 Electricity_result = value.(Electricity)
 Batteries_result = value.(Batteries)
+Transmission_result = value.(Transmission)
+TransCap_result = value.(TransCap)
 CO2 = 0.202/0.4*sum(Electricity_result[r,:Gas,h] for r in REGION for h in HOUR)
-
 
 annual_elec = AxisArray(zeros(numregions, numplants), REGION, PLANT)
 installed_cap = AxisArray(zeros(numregions, numplants), REGION, PLANT)
@@ -44,6 +45,7 @@ end
 for p in PLANT
     elec_germany[p, :] = Electricity_result[:DE, p, 147:651]
 end
+
 println("Cost (M€): ", Cost_result)
 println("Annual Electricity production: ", annual_elec)
 print(installed_cap)
