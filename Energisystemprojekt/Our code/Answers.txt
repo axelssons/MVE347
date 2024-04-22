@@ -7,3 +7,13 @@ a, infeasable
 b, Cost = 64922,04 M€
    CO2 = 1.39e7 kg CO2e
    Vi ser att priset blir billigare och koldioxidutsläppen minskar pga. mindre användning av gas eftersom batterierna i stor utsträckning kan användas för att hantera variationen
+
+Uppgift 3:
+Cost = 60488.90 M€
+CO2 = 1.39e7 kg CO2e
+
+Uppgift 4:
+Cost = 43928.22 M€
+CO2 = 1.39e7 kg CO2e = CO2cap
+
+
