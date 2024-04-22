@@ -4,7 +4,7 @@ using Plots, StatsPlots
 
 include("model.jl")
 include("data.jl")
-m, Capacity, Electricity = buildmodel("data.jl")
+m, Capacity, Electricity, Batteries = buildmodel("data.jl")
 
 set_optimizer_attribute(m, "LogLevel", 1)
 set_optimizer(m, Gurobi.Optimizer) #m is model from model file
@@ -24,6 +24,8 @@ end
 Cost_result = objective_value(m)/1000000 # M€
 Capacity_result = value.(Capacity)
 Electricity_result = value.(Electricity)
+Batteries_result = value.(Batteries)
+CO2 = 0.202/0.4*sum(Electricity_result[r,:Gas,h] for r in REGION for h in HOUR)
 
 println("Cost (M€): ", Cost_result)
 
@@ -40,8 +42,9 @@ for p in PLANT
     elec_germany[p, :] = Electricity_result[:DE, p, 147:651]
 end
 
-println(annual_elec)
-println(installed_cap)
+println("Annual Electricity production: ", annual_elec)
+print(installed_cap)
+println("\n CO2 emissions: ",CO2)
 
 AnnualProd_fig = groupedbar(
     annual_elec,

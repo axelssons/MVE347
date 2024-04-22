@@ -36,6 +36,7 @@ maxcaptable = [                                                             # GW
 maxcap = AxisArray(maxcaptable[:, 2:end]'.*1000, REGION, PLANT) # MW
 
 maxcap_water = 33*10^6
+BatteriesCap = myinf
 
 RunningCost = AxisArray([0.1, 2, 0.1, 0.1], PLANT)
 FuelCost = AxisArray([0, 22, 0, 0], PLANT)
@@ -43,11 +44,14 @@ Efficiency = AxisArray([1, 0.4, 1, 1], PLANT)
 
 RörligCost = AxisArray([0.1,2+22/0.4,0.1,0.1],PLANT)
 
+CO2cap=0.1*1.3877448499264726e8
+
 dr = 0.05 #discountrate
-IC = AxisArray([0, 550000, 1100000, 600000], PLANT)
+IC = AxisArray([0, 55, 1100, 600]*1000, PLANT)
 Lifetime = AxisArray([80, 30, 25, 25], PLANT)
 AC = AxisArray(zeros(numplants), PLANT)
 for p in PLANT
     AC[p] = IC[p] * dr/(1-1/((1+dr)^Lifetime[p])) #Beräknar avskrivningsvärdet
 end
+bAC = 150*1000*0.05/(1 - 1/(1.05)^10)
 
