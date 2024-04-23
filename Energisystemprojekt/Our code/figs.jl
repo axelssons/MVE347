@@ -1,9 +1,10 @@
 using Plots, StatsPlots
 
-PLANTB=[:Hydro, :Gas, :Wind, :PV,  :Batteries]#:Nuclear,
+PLANTB=[:Hydro, :Gas, :Wind, :PV,  :Batteries, :Nuclear]
+PLANTN=[:Nuclear, :Hydro, :Gas, :Wind, :PV]
 annual_elec = AxisArray(zeros(numregions, numplants), REGION, PLANT)
 installed_cap = AxisArray(zeros(numregions, numplants+1), REGION, PLANTB)
-elec_germany = AxisArray(zeros(numplants, length(147:651)), PLANT, 147:651)
+elec_germany = AxisArray(zeros(numplants, length(147:651)), PLANTN, 147:651)
 transmission_cap = AxisArray(zeros(6), [:SEDE, :DESE, :DKDE, :DEDK, :SEDK,:DKSE])
 transmission = AxisArray(zeros(6), [:SEDE, :DESE, :DKDE, :DEDK, :SEDK,:DKSE])
 
@@ -15,7 +16,7 @@ for r in REGION
     installed_cap[r, :Batteries] = Batteries_result[r]
 end
 
-for p in PLANT
+for p in PLANTN
     elec_germany[p, :] = Electricity_result[:DE, p, 147:651]
 end
 
@@ -62,16 +63,16 @@ TotalTransmission_fig = bar(
     labels = "Transmission"
 )
 
-savefig(AnnualProd_fig, "AnnualProd3")
-savefig(InstalledCapac_fig, "InstalledCapac3")
-savefig(InstalledTransmission_fig, "InstalledTrans3")
-savefig(TotalTransmission_fig, "TotalTrans3")
+savefig(AnnualProd_fig, "AnnualProd4")
+savefig(InstalledCapac_fig, "InstalledCapac4")
+savefig(InstalledTransmission_fig, "InstalledTrans4")
+savefig(TotalTransmission_fig, "TotalTrans4")
 
 areaplot(
     147:641,
     elec_germany', 
     fillalpha = [0.4 0.4 0.4],
-    labels = ["Hydro" "Gas" "Wind" "PV" "Nuclear"]
+    labels = ["Nuclear" "Hydro" "Gas" "Wind" "PV"]
 )
 Ger_ProdLoad = plot!(
     147:651, 
@@ -79,4 +80,4 @@ Ger_ProdLoad = plot!(
     linecolor = "black",
     labels = "Load"
 )
-savefig(Ger_ProdLoad, "Ger_ProdLoad3.png")
+savefig(Ger_ProdLoad, "Ger_ProdLoad41.png")
