@@ -44,8 +44,8 @@ RörligCost = AxisArray([0.1, 2+22/0.4, 0.1, 0.1], PLANT) #,4+3.2/0.4
 CO2cap = 0.1*1.3877448499264726e8
 
 dr = 0.05 #discountrate
-IC = AxisArray([0, 550, 1100, 600]*1000, PLANT)
-Lifetime = AxisArray([80, 30, 25, 25], PLANT)
+IC = AxisArray([0, 550, 1100, 600]*1000, PLANT)#, 7700
+Lifetime = AxisArray([80, 30, 25, 25], PLANT)#, 50
 AC = AxisArray(zeros(numplants), PLANT)
 for p in PLANT
     AC[p] = IC[p] * dr/(1-1/((1+dr)^Lifetime[p])) #Beräknar avskrivningsvärdet

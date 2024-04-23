@@ -1,6 +1,6 @@
 using Plots, StatsPlots
 
-PLANTB=[:Hydro, :Gas, :Wind, :PV, :Batteries]
+PLANTB=[:Hydro, :Gas, :Wind, :PV,  :Batteries]#:Nuclear,
 annual_elec = AxisArray(zeros(numregions, numplants), REGION, PLANT)
 installed_cap = AxisArray(zeros(numregions, numplants+1), REGION, PLANTB)
 elec_germany = AxisArray(zeros(numplants, length(147:651)), PLANT, 147:651)
@@ -52,10 +52,10 @@ InstalledTransmission_fig = bar(
     bar_position = :stack,
     bar_width = 0.7,
     xticks=(1:12, string.(collect([:SEDE, :DESE, :DKDE, :DEDK, :SEDK,:DKSE]))),
-    labels = "Transmission"
+    labels = "Installed Transmission"
 )
 TotalTransmission_fig = bar(
-    transmission_cap,
+    transmission,
     bar_position = :stack,
     bar_width = 0.7,
     xticks=(1:12, string.(collect([:SEDE, :DESE, :DKDE, :DEDK, :SEDK,:DKSE]))),
